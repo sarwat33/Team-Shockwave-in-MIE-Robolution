@@ -59,7 +59,6 @@ Q5)  <b>Integrate the existing inventory system</b>
 
 # D) Big Idea: Order Delivery Time Prediction on OLED Display
 
-<hr>
 
 <b>Problem</b>
 
