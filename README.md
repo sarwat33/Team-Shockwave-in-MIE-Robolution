@@ -34,9 +34,11 @@ Q4) <b>Strategies:</b>
 2. <b>Queue Management:</b> Buffer orders in a queue to prevent system overload.
 
 Q5)  <b>Integrate the existing inventory system</b>
+
 *Sudden system changes can create chaos in the kitchen.*
+
 🔗 **Gradual Sync:**  
- API can be used to fetch and update stock data seamlessly. The API fetches inventory data by sending a GET request to the inventory management system's endpoint (e.g., /api/inventory), retrieving real-time stock levels for ingredients like tomatoes or pasta, which are then stored in a cloud database like Firebase. To update stock without interrupting kitchen operations, the API uses asynchronous POST requests (e.g., /api/inventory/update) triggered by each order, deducting used quantities (e.g., 2 tomatoes for a salad) from the database while the kitchen continues its workflow uninterrupted. A background service ensures these updates are processed in real-time, and kitchen staff can access current stock levels via a dashboard, avoiding any manual interference during service. This method ensures smooth operations, as the kitchen focuses on cooking while the system handles stock adjustments automatically.
+ API can be used to fetch and update stock data seamlessly. The API fetches inventory data by sending a GET request to the inventory management system's endpoint (e.g., /api/inventory), retrieving real-time stock levels for ingredients like tomatoes or pasta, which are then stored in a cloud database like Firebase. To update stock without interrupting kitchen operations, the API uses asynchronous POST requests (e.g., /api/inventory/update) triggered by each order, deducting used quantities (e.g., 2 tomatoes for a salad) from the database while the kitchen continues its workflow uninterrupted. This method ensures smooth operations, as the kitchen focuses on cooking while the system handles stock adjustments automatically.
 ```
  [Smart Pad Order] → [API: GET /inventory] → [Cloud DB: Fetch Stock]
                           ↓
