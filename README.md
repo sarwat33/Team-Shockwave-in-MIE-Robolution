@@ -12,8 +12,7 @@ Q1) <b>Suggested features:</b>
 2. <b>Real-Time Order Updates:</b> Instant transmission to the kitchen via cloud.
 3. <b>Order Confirmation:</b> Display confirmation on the device after order submission.
 
-<img>circuit_Res_management.png</img>
-
+<img src="circuit_Res_management.png" width="300" />
 Q2) <b>Design principles:</b>
 
 *Design must be user-friendly. Too much complex UI can lead to backlash from general consumers.*
