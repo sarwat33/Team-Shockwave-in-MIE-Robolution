@@ -3,6 +3,7 @@ This repository is for the MIE Robolution competition held on CUET. Team Shockwa
 <br>
 # A) Quick Fixes 
 <br>
+
 Q1) <b>Suggested features:</b>
 
 *Must balance pace, accuracy, and be user-friendly.*
