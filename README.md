@@ -50,6 +50,8 @@ Q5)  <b>Integrate the existing inventory system</b>
                           ↓
 [Kitchen Dashboard: View Updated Stock]
 ```
+
+
 # B) 
 
 
@@ -57,34 +59,34 @@ Q5)  <b>Integrate the existing inventory system</b>
 
 # D) Big Idea: Order Delivery Time Prediction on OLED Display
 
-Problem
+<b>Problem</b>
 
 Customers at Bistro 92 often face uncertainty about how long their orders will take to arrive, leading to frustration, especially during peak hours. Without real-time insights into kitchen workload, ingredient availability, or staff capacity, customers may perceive delays as poor service, impacting their dining experience and satisfaction.
 
-Solution
+<b>Solution</b>
 
 We propose integrating an Order Delivery Time Prediction System into the smart ordering device, displaying an estimated delivery time on the OLED screen after an order is placed. The system calculates the estimated time by analyzing multiple factors: ingredient availability, stove and cooker availability, waiter availability, and historical order fulfillment data. Additionally, it accounts for real-time kitchen workload and order complexity (e.g., preparation time for sushi vs. pasta) to provide accurate predictions. Once the order is submitted via the ESP32 module, the OLED display updates with a message like “Estimated Delivery: 12 minutes,” enhancing transparency and managing customer expectations effectively.
 
-Technology Stack
+<b>Technology Stack</b>
 
 
-Backend: Python with Flask for the prediction API, hosted on AWS Lambda for scalability.
+<b>Backend:</b> Python with Flask for the prediction API, hosted on AWS Lambda for scalability.
 
 
-Machine Learning: Scikit-learn for a regression model to predict delivery time based on historical data.
+<b>Machine Learning:</b> Scikit-learn for a regression model to predict delivery time based on historical data.
 
-Database: PostgreSQL to store inventory, kitchen resources, staff schedules, and historical order data.
+<b>Database:</b> PostgreSQL to store inventory, kitchen resources, staff schedules, and historical order data.
 
 
-Frontend: OLED display on the smart pad to show the predicted time.
+<b>Frontend:</b> OLED display on the smart pad to show the predicted time.
 
-IoT Integration: ESP32 to fetch and display the prediction after order submission.
+<b>IoT Integration:</b> ESP32 to fetch and display the prediction after order submission.
 
-Implementation
+<b>Implementation</b>
 
-Data Collection: Gather real-time data on ingredient stock (via the inventory API), kitchen resources (e.g., number of stoves/cookers available, tracked by a kitchen management system), and waiter availability (via a staff scheduling system). Historical data on order fulfillment times (e.g., sushi takes 8 minutes on average) is stored in PostgreSQL.
+<b>Data Collection:</b> Gather real-time data on ingredient stock (via the inventory API), kitchen resources (e.g., number of stoves/cookers available, tracked by a kitchen management system), and waiter availability (via a staff scheduling system). Historical data on order fulfillment times (e.g., sushi takes 8 minutes on average) is stored in PostgreSQL.
 
-Prediction Model: Train a regression model using scikit-learn, with features like order complexity (e.g., number of items, preparation difficulty), ingredient availability (e.g., low stock may delay sourcing), kitchen workload (e.g., 5 pending orders), and waiter availability (e.g., 2 waiters on shift). Additional factors like peak hours (detected via time-based analysis) and historical averages (e.g., pasta orders take 10 minutes during lunch rush) are included to improve accuracy.
+</b>Prediction Model:</b> Train a regression model using scikit-learn, with features like order complexity (e.g., number of items, preparation difficulty), ingredient availability (e.g., low stock may delay sourcing), kitchen workload (e.g., 5 pending orders), and waiter availability (e.g., 2 waiters on shift). Additional factors like peak hours (detected via time-based analysis) and historical averages (e.g., pasta orders take 10 minutes during lunch rush) are included to improve accuracy.
 
 <b>Real-Time Calculation:</b> When an order is placed, the ESP32 sends the order details to the Flask API, which queries the database for current kitchen status and runs the prediction model. The API returns the estimated time (e.g., 12 minutes) to the ESP32.
 
