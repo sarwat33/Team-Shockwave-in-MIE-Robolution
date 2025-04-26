@@ -111,9 +111,9 @@ We propose integrating an Order Delivery Time Prediction System into the smart o
 
 <b>Order Complexity Factor:</b> Account for preparation differences (e.g., grilling takes longer than assembling a salad) by assigning weights to menu items in the model.
 
-<b>Dynamic Updates:<b/> If a stove breaks down or a waiter calls in sick, the system adjusts the prediction in real-time and notifies the customer via the OLED display.
+<b>Dynamic Updates:</b> If a stove breaks down or a waiter calls in sick, the system adjusts the prediction in real-time and notifies the customer via the OLED display.
 
-<b>Customer Communication:<b/> 
+<b>Customer Communication:</b> 
 Display a confidence level (e.g., “90% confidence”) alongside the estimate to set realistic expectations, especially during unpredictable scenarios like sudden rushes.
 
 <hr>
@@ -121,6 +121,7 @@ Display a confidence level (e.g., “90% confidence”) alongside the estimate t
 <b>Benefits:</b> 
 
 <b>Improved Customer Experience:</b>
+
 Transparency about delivery times reduces anxiety and builds trust, enhancing satisfaction.Better Kitchen Management: Insights into workload factors help staff prioritize tasks (e.g., freeing up a stove for high-priority orders).Data-Driven Optimization: Historical data analysis identifies bottlenecks (e.g., frequent delays due to limited stoves), informing operational improvements.Increased Efficiency: Accurate predictions prevent overpromising, reducing customer complaints and staff stress during peak hours.
 
 <b>Diagram</b>
