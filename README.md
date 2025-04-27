@@ -66,6 +66,9 @@ The schema tracks users, tables, menu items, orders, and payments, optimized for
 
 Indexes on foreign keys and timestamps boost speed for frequent queries (e.g. recent orders, item lookups).
 
+![Schema Visualizer](sql/scheme_visualizer.png)
+
+
 Q2) **SQL Query**
 
 To retrieve all orders from the past hour with table numbers, item names, and timestamps:
