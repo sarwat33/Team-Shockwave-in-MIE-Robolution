@@ -53,10 +53,244 @@ Q5)  <b>Integrate the existing inventory system</b>
 ```
 
 
-# B) 
+# B) werr
+
+Q1)
+The schema tracks users, tables, menu items, orders, and payments, optimized for performance with proper relationships and indexing:
+
+admin_users: System managers (id, name, email, password)
+tables: Physical restaurant tables (id, table_number, status)
+menu_items: Menu data (id, name, price, category, is_available, etc.)
+orders: Orders per table with timestamps (id, table_id, status, placed_at, total_amount)
+order_items: Ordered items with quantity and price snapshot (order_id, menu_item_id, quantity)
+payments: Payments by order (order_id, amount, method, status, paid_at)
+
+Indexes on foreign keys and timestamps boost speed for frequent queries (e.g. recent orders, item lookups).
+
+Q2)
+To retrieve all orders from the past hour with table numbers, item names, and timestamps:
+
+```sql
+SELECT 
+  o.id AS order_id,
+  t.table_number,
+  o.placed_at,
+  mi.name AS item_name,
+  oi.quantity
+FROM orders o
+JOIN tables t ON o.table_id = t.id
+JOIN order_items oi ON oi.order_id = o.id
+JOIN menu_items mi ON oi.menu_item_id = mi.id
+WHERE o.placed_at >= NOW() - INTERVAL '1 hour'
+ORDER BY o.placed_at DESC;
+```
+
+This query is optimized using indexes on `placed_at`, `table_id`, and `order_id`, ensuring fast retrieval even with high traffic.
+
+Q3)
+To notify kitchen staff in real time, we used the following stack:
+
+- **Backend** : Node.js with WebSocket server
+ 
+- **Frontend** : Next.js for the kitchen dashboard
+ 
+- **Communication** : WebSocket-based live updates
+
+**How it works:** 
+ 
+2. The smart pad sends the new order to the Node.js server via a REST API.
+ 
+4. The server saves the order to the database.
+ 
+6. Once saved, the server **broadcasts the new order**  using WebSockets to all connected kitchen clients.
+ 
+8. The kitchen dashboard (Next.js) listens for these WebSocket messages and updates the UI instantly.
+
+This system ensures **low-latency** , real-time communication with minimal overhead, keeping the kitchen always in sync with new orders.
+
+Flow
+```mermaid
+graph TD
+    A["Smart Pad (ESP32)"] -->|"POST /order"| B["Node.js Server"]
+    B -->|"Save to DB"| C["PostgreSQL Database"]
+    B -->|"emit('newOrder')"| D["WebSocket Server"]
+    D --> E["Kitchen Dashboard (Next.js)"]
+```
+
+Q4: Cloud-Based System Architecture
+
+We designed a simple, reliable cloud-based architecture to keep the system responsive and always available:
+
+ 
+- **Smart Pads (ESP32)**  send HTTP requests to our backend with order data.
+ 
+- The **Node.js backend**  is hosted on a cloud provider like **Google Cloud Run**  or **AWS EC2** . It handles:
+ 
+  - Saving orders to the database
+ 
+  - Broadcasting real-time updates via **WebSockets**
+ 
+- **PostgreSQL**  is used for storing all data (orders, menu, tables) — hosted on a managed service like **Supabase**  or **Amazon RDS** , ensuring automatic backups and good performance.
+ 
+- **Kitchen Dashboard**  (built with **Next.js** ) is deployed on **Vercel** . It connects to the backend using WebSocket and listens for live updates.
+ 
+- Basic **monitoring**  (logs + uptime checks) is handled using services like **Google Cloud Monitoring**  or **Statuscake** .
 
 
-# C)
+This setup is:
+
+ 
+- **Lightweight but scalable**  — we can add load balancing or autoscaling later if needed
+ 
+- **Low latency**  — WebSocket updates reach the dashboard instantly
+ 
+- **Cloud-ready**  — works on most platforms with minimal configuration
+
+
+We kept it clean, maintainable, and fast — just enough for real-time sync without unnecessary complexity.
+
+Q5) s
+We built a real-time dashboard using:
+
+Next.js for the frontend with WebSockets to receive live updates.
+
+Node.js backend handles events and data APIs.
+
+PostgreSQL stores all order and payment data.
+
+
+Key Features:
+
+Pending Orders update instantly via WebSocket.
+
+Average Fulfillment Time uses SQL AVG(completed_at - placed_at).
+
+Total Sales is computed from recent payments.
+
+This setup is lightweight, fast, and easy to scale—perfect for a busy restaurant dashboard.
+
+ 
+
+# C) Bonus Booster
+
+Q1) Somethhing
+We built a RESTful API to handle real-time order placement and restaurant operations, designed to support high concurrency without errors.
+
+**Core Endpoints** :
+ 
+- `POST /orders` – Place new order *(main endpoint)*
+ 
+- `GET /orders`, `POST /orders/last-hour-orders`, `PUT /orders/:id/status`
+ 
+- `GET /dashboard/metrics`, `POST /auth/login`
+ 
+- Full CRUD for `/menu-items` and `/tables`
+
+
+> 📁 *📁 For complete endpoint routing, see `server.js` (root directory)*
+
+`POST /orders` Details** :
+ 
+- **Request** :
+
+
+```json
+{
+  "tableId": 3,
+  "items": [
+    { "id": 1, "quantity": 2, "price": 100 },
+    { "id": 5, "quantity": 1, "price": 120 }
+  ]
+}
+```
+ 
+- **Response** :
+
+
+```json
+{
+  "message": "Order placed",
+  "orderId": 42,
+  "order": { ... }
+}
+```
+
+**Concurrency Control** :
+ 
+- All database actions are within a **
+All database actions are within a transaction (`BEGIN`/`COMMIT`)**
+ 
+- **ROLLBACK**  ensures safe recovery on failure
+ 
+- WebSocket updates are **only broadcast after a successful commit**
+ 
+- Ensures consistent, atomic operations under high load
+
+
+This setup allows multiple smart pads to place orders simultaneously without conflicts or data loss.
+
+Q2) To support high traffic and safely process numerous simultaneous orders without data loss, we use the following strategies:
+
+ 
+- **Cloud Deployment** : Hosted on platforms like **Render** , **AWS** , or **Fly.io** , with autoscaling for handling peak load.
+ 
+- **Dockerized App** : Ensures consistent deployments across environments.
+ 
+- **Stateless API** : Enables running multiple **Node.js instances**  behind a **load balancer** .
+ 
+- **PostgreSQL (managed)**  with **connection pooling**  for stable performance under heavy request volume.
+ 
+- **Database Transactions** : Every order placement runs inside a `BEGIN/COMMIT` block. If anything fails (e.g. DB insert or price mismatch), the transaction is **rolled back**  to prevent partial writes.
+ 
+- **WebSocket Scaling** : Uses **Redis Pub/Sub**  to sync real-time updates across all app instances.
+ 
+- **Async Queues (optional)** : Background tasks like analytics or notifications can be handled via **Bull**  to reduce pressure on the main flow.
+
+**If any part of the order fails** , the system rolls back the entire transaction and returns a clear error. This ensures that **no incomplete or corrupt orders**  are stored, even during high concurrency.
+The system is designed to remain **fast, fault-tolerant, and loss-proof**  under extreme traffic conditions.
+
+<b> Diagram </b>
+```mermaid
+flowchart TD
+    subgraph Clients
+        A1["Smart Pad 1"]
+        A2["Smart Pad 2"]
+        A3["Smart Pad 3"]
+    end
+
+    A1 --> LB["Load Balancer"]
+    A2 --> LB
+    A3 --> LB
+
+    LB --> S1["Node.js Server Instance 1"]
+    LB --> S2["Node.js Server Instance 2"]
+
+    subgraph Node.js Server
+        S1 --> T1["BEGIN Transaction"]
+        S2 --> T2["BEGIN Transaction"]
+        T1 --> D1["Insert Order + Items"]
+        T2 --> D2["Insert Order + Items"]
+        D1 --> C1{"Success?"}
+        D2 --> C2{"Success?"}
+        C1 -- Yes --> COM1["COMMIT"]
+        C2 -- Yes --> COM2["COMMIT"]
+        C1 -- No --> RB1["ROLLBACK"]
+        C2 -- No --> RB2["ROLLBACK"]
+        COM1 --> PUB1["Emit WebSocket via Redis"]
+        COM2 --> PUB2["Emit WebSocket via Redis"]
+    end
+
+    PUB1 & PUB2 --> R["Redis Pub/Sub"]
+    R --> WS1["Kitchen Dashboard 1"]
+    R --> WS2["Kitchen Dashboard 2"]
+
+    subgraph DB
+        D1 & D2 --> DB1["PostgreSQL (pooled)"]
+    end
+
+
+```
+
 
 # D) Big Idea: Order Delivery Time Prediction on OLED Display
 
