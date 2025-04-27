@@ -1,5 +1,6 @@
 # Team-Shockwave-in-MIE-Robolution
 This repository is for the MIE Robolution competition held on CUET. Team Shockwave documented the necessary required solutions and answers in this.
+For explanation video click the <a href='https://drive.google.com/drive/folders/1AIb1R7rmQRJiN9U9rRb0OrYNWt-d7-ru?usp=drive_link'>here</a>
 <br>
 # A) Quick Fixes 
 <br>
