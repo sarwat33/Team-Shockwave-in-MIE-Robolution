@@ -53,7 +53,7 @@ Q5)  <b>Integrate the existing inventory system</b>
 ```
 
 
-# B) werr
+# B) Tech Tricks 
 
 Q1)
 The schema tracks users, tables, menu items, orders, and payments, optimized for performance with proper relationships and indexing:
